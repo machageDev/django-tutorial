@@ -4,11 +4,12 @@ from django.shortcuts import render
 from django.template import loader
 from .models import Question
 from django.http import Http404
+from django.shortcuts import  get_object_or_404,render
 # Create your views here.
 def index(request):
     latest_question_list = Question.objects.order_by("-pub_date")[:5]
     template = loader.get_template("polls/index.html")
-    comtext = {"latest_question_list":latest_question_list}
+    context = {"latest_question_list":latest_question_list}
     return HttpResponse(template.render(context, request))
     
 def detail(request,question_id):
@@ -24,4 +25,10 @@ def detail(request,question_id):
         question = Question.objects.get(pk=question_id)
     except Question.DoesNotExist:
         raise Http404("Question does nor exist")
-    return render (request,"detail.html",{"question":question})    
+    return render (request,"detail.html",{"question":question})   
+
+# Ashortcut get_object_or_404()
+def detail(request,question_id):
+    question = get_object_or_404(Question ,pk=question_id) 
+    return render(request,"detail.html",{"question":question})
+#get_list_or_404()
