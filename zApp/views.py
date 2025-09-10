@@ -1,10 +1,12 @@
 from multiprocessing import context
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.template import loader
-from .models import Question
+from django.urls import reverse
+from .models import Question,Choice
 from django.http import Http404
 from django.shortcuts import  get_object_or_404,render
+from django.db.models import F
 # Create your views here.
 def index(request):
     latest_question_list = Question.objects.order_by("-pub_date")[:5]
@@ -32,3 +34,15 @@ def detail(request,question_id):
     question = get_object_or_404(Question ,pk=question_id) 
     return render(request,"detail.html",{"question":question})
 #get_list_or_404()
+
+#real version
+def vote(request,question_id):
+    question = get_object_or_404(Question,pk=question_id)
+    try:
+        selected_choice = question.choice_set.get(pk=request.POST["CHOICE"])
+    except (KeyError,Choice.DoesNotExist):   
+        return render(request,"detail.html",{"question":question,"error_message":"You didnt select a choice."},)
+    else:
+        selected_choice.votes = F("votes") + 1
+        selected_choice.save()
+    return HttpResponseRedirect(reverse("polls:results",args=(question_id)))
