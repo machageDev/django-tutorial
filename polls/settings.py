@@ -122,3 +122,11 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Daraja API
+
+MPESA_CONSUMER_KEY = "XSgLM7QN5cadTlEHSgrjRGyiJadbzYnSVLA4Te3mhvjRGMln"
+MPESA_CONSUMER_SECRET = "YtIksAfmJmYW988gbx1nG0vNwRexsJ6DWUtAgG3iBGB3SvKzAk9fAGHsd3rbfAbv"
+MPESA_BASE_URL = "https://sandbox.safaricom.co.ke"  # use production URL later
+MPESA_SHORTCODE = "174379"  
+MPESA_PASSKEY = "your_passkey_from_portal"
