@@ -112,6 +112,20 @@ def stk_push(request):
 
     response = requests.post(api_url, json=payload, headers=headers)
     return JsonResponse(response.json())
+def format_phone_number(phone):
+    # Remove spaces and plus signs
+    phone = str(phone).replace(" ", "").replace("+", "")
+
+    if phone.startswith("0"):
+        # Change 0712... → 254712...
+        phone = "254" + phone[1:]
+    elif phone.startswith("254"):
+        # Already correct
+        pass
+    else:
+        raise ValueError("Invalid phone number format")
+
+    return phone
 
 @csrf_exempt
 def mpesa_callback(request):
