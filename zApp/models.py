@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 from django.db import models
 
 # Create your models here.
-class Question(models.Model):
+"""class Question(models.Model):
     question_text = models.CharField(max_length=200)
     pub_date = models.DateField("date_published")
     
@@ -31,4 +31,20 @@ class Question(models.Model):
     )
     def was_published_recently(self):
         now = timezone.now()
-        return now - datetime.timedelta(days=1) <= self.pub_date <= now    
+        return now - datetime.timedelta(days=1) <= self.pub_date <= now    """
+    
+    
+class MpesaPayment(models.Model):
+    merchant_request_id = models.CharField(max_length=100)
+    checkout_request_id = models.CharField(max_length=100)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    mpesa_receipt_number = models.CharField(max_length=20)
+    phone_number = models.CharField(max_length=15)
+    transaction_date = models.DateTimeField()
+    result_code = models.IntegerField()
+    result_desc = models.TextField()
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.phone_number} - {self.amount} ({self.mpesa_receipt_number})"    
